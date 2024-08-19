@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-seat
+  namespace: {{ .Release.name }}
+spec:
+  type: ClusterIP
+  selector:
+    app: seat
+  clusterIP: None
+  ports:
+  - name: restapi
+    port: 10030
+    protocol: TCP 
+    targetPort: 10030
+  - name: rsocket
+    port: 10031
+    protocol: TCP
+    targetPort: 10031

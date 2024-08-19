@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-customize
+  namespace: {{ .Release.name }}
+spec:
+  replicas: {{ .Values.layers.backend.customize.replicas }}
+  serviceName: svc-customize
+  selector:
+    matchLabels:
+      app: customize
+  template:
+    metadata:
+      labels:
+        app: customize
+        layer: backend
+    spec:
+      volumes:
+      - name: v-data
+        hostPath:
+          path: {{ .Values.mountPaths.data }}
+          type: DirectoryOrCreate
+      initContainer:
+      - name: wait-for-db
+        image: busybox
+        command: ['sh', '-c', 'until nc -z -v -w180 svc-mariadb 3306; do echo "Waiting for database..."; sleep 5; done;']
+      containers:
+      - name: customize
+        image: {{ .Values.layers.backend.customize.image.name }}:{{ .Values.layers.backend.customize.image.tag }}
+        imagePullPolicy: {{ .Values.layers.backend.customize.image.pullPolicy }}
+        ports:
+        - containerPort: 10020
+        - containerPort: 10021
+        resources:
+          requests:
+            memory: {{ .Values.layers.backend.customize.resources.memory }}
+            cpu: {{ .Values.layers.backend.customize.resources.cpu }}
+          limits:
+            memory: 1Gi
+            cpu: 1
+        volumeMounts:
+        - name: v-data
+          mountPath: /app/data

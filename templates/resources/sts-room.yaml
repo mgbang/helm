@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-room
+  namespace: {{ .Release.name }}
+spec:
+  replicas: {{ .Values.layers.backend.room.replicas }}
+  serviceName: svc-room
+  selector:
+    matchLabels:
+      app: room
+  template:
+    metadata:
+      labels:
+        app: room
+        layer: backend
+    spec:
+      volumes:
+      - name: v-data
+        hostPath:
+          path: {{ .Values.mountPaths.data }}
+          type: DirectoryOrCreate
+      initContainer:
+      - name: wait-for-db
+        image: busybox
+        command: ['sh', '-c', 'until nc -z -v -w180 svc-mariadb 3306; do echo "Waiting for database..."; sleep 5; done;']
+      containers:
+      - name: room
+        image: {{ .Values.layers.backend.room.image.name }}:{{ .Values.layers.backend.room.image.tag }}
+        imagePullPolicy: {{ .Values.layers.backend.room.image.pullPolicy }}
+        ports:
+        - containerPort: 10040
+        - containerPort: 10041
+        resources:
+          requests:
+            memory: {{ .Values.layers.backend.room.resources.memory }}
+            cpu: {{ .Values.layers.backend.room.resources.cpu }}
+          limits:
+            memory: 1Gi
+            cpu: 1
+        volumeMounts:
+        - name: v-data
+          mountPath: /app/data

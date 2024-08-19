@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-mariadb
+  namespace: {{ .Release.name }}
+spec:
+  replicas: 1
+  serviceName: svc-mariadb
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+        layer: database
+    spec:
+      imagePullSecrets:
+      - name: nks-secret
+      volumes:
+      - name: v-database
+        hostPath:
+          path: {{ .Values.mountPaths.db }}
+          type: DirectoryOrCreate
+      containers:
+      - name: mariadb
+        image: {{ .Values.layers.database.image.name }}:{{ .Values.layers.database.image.tag }}
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            memory: {{ .Values.layers.database.resources.memory }}
+            cpu: {{ .Values.layers.database.resources.cpu }}
+          limits:
+            memory: 2Gi
+            cpu: 2
+        volumeMounts:
+        - name: v-database
+          mountPath: /var/lib/mysql
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/bash", "-c", "mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'SHUTDOWN;'"]

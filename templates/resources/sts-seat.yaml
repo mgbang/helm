@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-seat
+  namespace: {{ .Release.name }}
+spec:
+  replicas: {{ .Values.layers.backend.seat.replicas }}
+  serviceName: svc-seat
+  selector:
+    matchLabels:
+      app: seat
+  template:
+    metadata:
+      labels:
+        app: seat
+        layer: backend
+    spec:
+      volumes:
+      - name: v-data
+        hostPath:
+          path: {{ .Values.mountPaths.data }}
+          type: DirectoryOrCreate
+      initContainer:
+      - name: wait-for-db
+        image: busybox
+        command: ['sh', '-c', 'until nc -z -v -w180 svc-mariadb 3306; do echo "Waiting for database..."; sleep 5; done;']
+      containers:
+      - name: seat
+        image: {{ .Values.layers.backend.seat.image.name }}:{{ .Values.layers.backend.seat.image.tag }}
+        imagePullPolicy: {{ .Values.layers.backend.seat.image.pullPolicy }}
+        ports:
+        - containerPort: 10030
+        - containerPort: 10031
+        resources:
+          requests:
+            memory: {{ .Values.layers.backend.seat.resources.memory }}
+            cpu: {{ .Values.layers.backend.seat.resources.cpu }}
+          limits:
+            memory: 1Gi
+            cpu: 1
+        volumeMounts:
+        - name: v-data
+          mountPath: /app/data

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-gateway
+  namespace: {{ .Release.name }}
+spec:
+  replicas: {{ .Values.layers.backend.gateway.replicas }}
+  serviceName: svc-gateway
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+        layer: backend
+    spec:
+      volumes:
+      - name: v-data
+        hostPath:
+          path: {{ .Values.mountPaths.data }}
+          type: DirectoryOrCreate
+      containers:
+      - name: gateway
+        image: {{ .Values.layers.backend.gateway.image.name }}:{{ .Values.layers.backend.gateway.image.tag }}
+        imagePullPolicy: {{ .Values.layers.backend.gateway.image.pullPolicy }}
+        ports:
+        - containerPort: 10000
+        - containerPort: 10001
+        resources:
+          requests:
+            memory: {{ .Values.layers.backend.gateway.resources.memory }}
+            cpu: {{ .Values.layers.backend.gateway.resources.cpu }}
+          limits:
+            memory: 1Gi
+            cpu: 1
+        volumeMounts:
+        - name: v-data
+          mountPath: /app/data

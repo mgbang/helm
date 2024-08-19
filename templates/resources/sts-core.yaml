@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-core
+  namespace: {{ .Release.name }}
+spec:
+  replicas: {{ .Values.layers.backend.core.replicas }}
+  serviceName: svc-core
+  selector:
+    matchLabels:
+      app: core
+  template:
+    metadata:
+      labels:
+        app: core
+        layer: backend
+    spec:
+      volumes:
+      - name: v-data
+        hostPath:
+          path: {{ .Values.mountPaths.data }}
+          type: DirectoryOrCreate
+      initContainer:
+      - name: wait-for-db
+        image: busybox
+        command: ['sh', '-c', 'until nc -z -v -w180 svc-mariadb 3306; do echo "Waiting for database..."; sleep 5; done;']
+      containers:
+      - name: core
+        image: {{ .Values.layers.backend.core.image.name }}:{{ .Values.layers.backend.core.image.tag }}
+        imagePullPolicy: {{ .Values.layers.backend.core.image.pullPolicy }}
+        ports:
+        - containerPort: 10010
+        - containerPort: 10011
+        resources:
+          requests:
+            memory: {{ .Values.layers.backend.core.resources.memory }}
+            cpu: {{ .Values.layers.backend.core.resources.cpu }}
+          limits:
+            memory: 1Gi
+            cpu: 1
+        volumeMounts:
+        - name: v-data
+          mountPath: /app/data

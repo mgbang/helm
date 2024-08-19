@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-customize
+  namespace: {{ .Release.name }}
+spec:
+  type: ClusterIP
+  selector:
+    app: customize
+  clusterIP: None
+  ports:
+  - name: restapi
+    port: 10020
+    protocol: TCP 
+    targetPort: 10020
+  - name: rsocket
+    port: 10021
+    protocol: TCP
+    targetPort: 10021

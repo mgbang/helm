@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-nginx
+  namespace: {{ .Release.name }}
+spec:
+  replicas: {{ .Values.layers.frontend.replicas }}
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+        layer: frontend
+    spec:
+      volumes:
+      - name: v-html
+        hostPath:
+          path: {{ .Values.mountPaths.html }}
+          type: DirectoryOrCreate
+      containers:
+      - name: nginx
+        image: {{ .Values.layers.frontend.image.name }}:{{ .Values.layers.frontend.image.tag }}
+        imagePullPolicy: {{ .Values.layers.frontend.image.pullPolicy }}
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: {{ .Values.layers.frontend.resources.memory }}
+            cpu: {{ .Values.layers.frontend.resources.cpu }}
+          limits:
+            memory: 1Gi
+            cpu: 1
+        volumeMounts:
+        - name: v-html
+          mountPath: /usr/share/nginx/html
+

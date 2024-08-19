@@ -1,0 +1,86 @@
+nodeSelector: {
+  node: 1
+}
+
+ingress:
+  bodySize: "256M"
+  api:
+    pattern: /(?:token|core|site|seat|room|public|image|contents)(.*)
+
+secret:
+  registry:
+    file: config.json
+  tls:
+    crt:
+    key:
+
+mountPaths:
+  data: /app/data
+  logs: /app/logs
+  html: /app/html
+  db: /app/mariadb
+
+layers:
+  backend:
+    gateway:
+      replicas: 1
+      image:
+        name: kaburam/smartoffice3.gateway
+        tag: 3.0.0
+        pullPolicy: Always
+      resources:
+        memory: 500Mi
+        cpu: 200m
+    core:
+      replicas: 1
+      image:
+        name: kaburam/smartoffice3.core
+        tag: 3.0.0
+        pullPolicy: Always
+      resources:
+        memory: 500Mi
+        cpu: 200m
+    customize:
+      replicas: 1
+      image:
+        name: kaburam/smartoffice3.customize
+        tag: 3.0.0
+        pullPolicy: Always
+      resources:
+        memory: 500Mi
+        cpu: 200m
+    seat:
+      replicas: 1
+      image:
+        name: kaburam/smartoffice3.seat
+        tag: 3.0.0
+        pullPolicy: Always
+      resources:
+        memory: 500Mi
+        cpu: 200m
+    room:
+      replicas: 1
+      image:
+        name: kaburam/smartoffice3.room
+        tag: 3.0.0
+        pullPolicy: Always
+      resources:
+        memory: 500Mi
+        cpu: 200m
+  frontend:
+    replicas: 1
+    image:
+      name: nginx
+      tag: 1.27.1
+      pullPolicy: IfNotPresent
+    resources:
+        memory: 500Mi
+        cpu: 200m
+  database:
+    image:
+      name: smartoffice2.kr.ncr.ntruss.com/db
+      tag: dev-6d86f40b5835cc6489b27ea3930c1ca738c0587c
+      pullPolicy: IfNotPresent
+    resources:
+        memory: 500Mi
+        cpu: 200m

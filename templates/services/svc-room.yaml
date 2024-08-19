@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-room
+  namespace: {{ .Release.name }}
+spec:
+  type: ClusterIP
+  selector:
+    app: room
+  clusterIP: None
+  ports:
+  - name: restapi
+    port: 10040
+    protocol: TCP 
+    targetPort: 10040
+  - name: rsocket
+    port: 10041
+    protocol: TCP
+    targetPort: 10041
