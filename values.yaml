@@ -9,7 +9,7 @@ ingress:
 
 secret:
   registry:
-    file: config.json
+    file: registry/config.json
   tls:
     crt:
     key:
