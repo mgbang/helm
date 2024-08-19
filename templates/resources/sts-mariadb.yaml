@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: sts-mariadb
-  namespace: {{ .Release.name }}
+  namespace: {{ .Chart.Name }}
 spec:
   replicas: 1
   serviceName: svc-mariadb

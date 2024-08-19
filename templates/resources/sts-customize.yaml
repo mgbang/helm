@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: sts-customize
-  namespace: {{ .Release.name }}
+  namespace: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.layers.backend.customize.replicas }}
   serviceName: svc-customize

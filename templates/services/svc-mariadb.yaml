@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: svc-mariadb
-  namespace: {{ .Release.name }}
+  namespace: {{ .Chart.Name }}
 spec:
   type: NodePort
   selector:
