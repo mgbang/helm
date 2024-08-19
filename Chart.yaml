@@ -1,6 +1,6 @@
 apiVersion: v2
 name: smartoffice3
-description: A Helm chart for Kubernetes
+description: smartoffice 3.0 solution
 
 # A chart can be either an 'application' or a 'library' chart.
 #
