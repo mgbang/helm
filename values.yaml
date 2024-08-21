@@ -78,8 +78,8 @@ layers:
         cpu: 200m
   database:
     image:
-      name: smartoffice2.kr.ncr.ntruss.com/db
-      tag: dev-6d86f40b5835cc6489b27ea3930c1ca738c0587c
+      name: kaburam/mariadb
+      tag: 11.5.2
       pullPolicy: IfNotPresent
     resources:
         memory: 500Mi

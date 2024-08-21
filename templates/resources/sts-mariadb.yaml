@@ -15,8 +15,6 @@ spec:
         app: db
         layer: database
     spec:
-      imagePullSecrets:
-      - name: nks-secret
       volumes:
       - name: v-database
         hostPath:
