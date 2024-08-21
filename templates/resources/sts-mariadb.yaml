@@ -20,6 +20,8 @@ spec:
         hostPath:
           path: {{ .Values.mountPaths.db }}
           type: DirectoryOrCreate
+      imagePullSecrets:
+      - name: kaburam-secret
       containers:
       - name: mariadb
         image: {{ .Values.layers.database.image.name }}:{{ .Values.layers.database.image.tag }}
