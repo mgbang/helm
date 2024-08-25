@@ -15,17 +15,17 @@ spec:
         layer: frontend
     spec:
       nodeSelector:
-        masterVersion: {{ .Values.nodeSelector.masterVersion }}
-      affinity:
-        podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-              - matchExpressions:
-                - key: layer
-                  operator: In
-                  values:
-                  - backend
+        masterVersion: "{{ .Values.nodeSelector.masterVersion }}"
+      # affinity:
+      #   podAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #       - weight: 100
+      #         preference:
+      #         - matchExpressions:
+      #           - key: layer
+      #             operator: In
+      #             values:
+      #             - backend
       volumes:
       - name: v-html
         hostPath:

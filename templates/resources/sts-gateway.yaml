@@ -16,16 +16,16 @@ spec:
         layer: backend
     spec:
       nodeSelector:
-        masterVersion: {{ .Values.nodeSelector.masterVersion }}
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: layer
-                operator: In
-                values:
-                - backend
+        masterVersion: "{{ .Values.nodeSelector.masterVersion }}"
+      # affinity:
+      #   podAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: layer
+      #           operator: In
+      #           values:
+      #           - backend
       volumes:
       - name: v-data
         hostPath:
