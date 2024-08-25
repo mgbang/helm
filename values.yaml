@@ -1,5 +1,5 @@
 nodeSelector: {
-  node: 1
+  masterVersion: 3
 }
 
 ingress:
