@@ -19,14 +19,13 @@ spec:
         masterVersion: {{ .Values.nodeSelector.masterVersion }}
       affinity:
         podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            preference:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
             - matchExpressions:
               - key: layer
                 operator: In
                 values:
-                - database
+                - backend
       volumes:
       - name: v-data
         hostPath:

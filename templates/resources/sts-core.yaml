@@ -22,6 +22,10 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
+              - key: layer
+                operator: In
+                values:
+                - backend
               - key: app
                 operator: In
                 values:
