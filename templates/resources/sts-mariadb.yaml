@@ -17,16 +17,18 @@ spec:
     spec:
       nodeSelector:
         masterVersion: "{{ .Values.nodeSelector.masterVersion }}"
-      # affinity:
-      #   podAffinity:
-      #     preferredDuringSchedulingIgnoredDuringExecution:
-      #     - weight: 100
-      #       preference:
-      #       - matchExpressions:
-      #         - key: layer
-      #           operator: In
-      #           values:
-      #           - backend
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: layer
+                  operator: In
+                  values:
+                  - backend
+              topologyKey: "kubernetes.io/hostname"
       volumes:
       - name: v-database
         hostPath:
