@@ -4,11 +4,11 @@ metadata:
   name: svc-mariadb
   namespace: {{ .Chart.Name }}
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: db
+  clusterIP: 10.100.100.100
   ports:
   - port: 3306
     protocol: TCP 
     targetPort: 3306
-    nodePort: 30000
