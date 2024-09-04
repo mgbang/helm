@@ -5,7 +5,7 @@ nodeSelector: {
 ingress:
   bodySize: "256M"
   api:
-    pattern: /(?:token|core|site|seat|room|public|image|contents)(.*)
+    pattern: /(?:token|core|site|seat|room|public|image|contents|secret)(.*)
 
 secret:
   registry:
@@ -15,7 +15,7 @@ secret:
     key:
 
 mountPaths:
-  data: /app/data
+  data: /mnt/ipdisk/HDD2/app/data
   logs: /app/logs
   html: /app/html
   db: /app/mariadb
