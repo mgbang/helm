@@ -15,7 +15,7 @@ secret:
     key:
 
 mountPaths:
-  data: /mnt/ipdisk/HDD2/app/data
+  data: /app/data
   logs: /app/logs
   html: /app/html
   db: /app/mariadb
