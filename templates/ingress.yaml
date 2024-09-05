@@ -12,7 +12,7 @@ spec:
   - http:
       paths:
       - path: {{ .Values.ingress.api.pattern }}
-        pathType: ImplementationSpecific
+        pathType: Prefix
         backend:
           service:
             name: svc-gateway
