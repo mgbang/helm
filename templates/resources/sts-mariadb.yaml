@@ -33,9 +33,8 @@ spec:
       - name: v-database
         hostPath:
           path: {{ .Values.mountPaths.db }}
-          type: DirectoryOrCreate
       imagePullSecrets:
-      - name: kaburam-secret
+      - name: nks-secret
       containers:
       - name: mariadb
         image: {{ .Values.layers.database.image.name }}:{{ .Values.layers.database.image.tag }}

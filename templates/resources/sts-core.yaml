@@ -37,7 +37,11 @@ spec:
       - name: v-data
         hostPath:
           path: {{ .Values.mountPaths.data }}
-          type: DirectoryOrCreate
+      - name: v-logs
+        hostPath:
+          path: {{ .Values.mountPaths.logs }}
+      imagePullSecrets:
+      - name: nks-secret
       initContainers:
       - name: wait-for-db
         image: busybox
@@ -59,3 +63,5 @@ spec:
         volumeMounts:
         - name: v-data
           mountPath: /app/data
+        - name: v-logs
+          mountPath: /app/logs
