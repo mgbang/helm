@@ -23,7 +23,7 @@ mountPaths:
 layers:
   backend:
     gateway:
-      replicas: 1
+      replicas: 2
       image:
         name: smartoffice3.kr.ncr.ntruss.com/gateway
         tag: 3.0.0
@@ -32,7 +32,7 @@ layers:
         memory: 500Mi
         cpu: 200m
     core:
-      replicas: 1
+      replicas: 2
       image:
         name: smartoffice3.kr.ncr.ntruss.com/core
         tag: 3.0.0
