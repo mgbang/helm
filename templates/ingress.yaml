@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-smartoffice3
-  namespace: {{ .Chart.Name }}
+  # namespace: {{ .Chart.Name }}
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: {{ .Values.ingress.bodySize }}

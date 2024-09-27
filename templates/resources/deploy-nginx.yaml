@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deploy-nginx
-  namespace: {{ .Chart.Name }}
+  # namespace: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.layers.frontend.replicas }}
   selector:
@@ -16,18 +16,18 @@ spec:
     spec:
       nodeSelector:
         masterVersion: "{{ .Values.nodeSelector.masterVersion }}"
-      affinity:
-        podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                  - key: layer
-                    operator: In
-                    values:
-                    - backend
-                topologyKey: "kubernetes.io/hostname"
+      # affinity:
+      #   podAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #       - weight: 100
+      #         podAffinityTerm:
+      #           labelSelector:
+      #             matchExpressions:
+      #             - key: layer
+      #               operator: In
+      #               values:
+      #               - backend
+      #           topologyKey: "kubernetes.io/hostname"
       volumes:
       - name: v-nginx-html
         hostPath:
@@ -43,11 +43,11 @@ spec:
         - containerPort: 80
         resources:
           requests:
-            memory: {{ .Values.layers.frontend.resources.memory }}
-            cpu: {{ .Values.layers.frontend.resources.cpu }}
+            memory: 256Mi
+            cpu: 200m
           limits:
-            memory: 1Gi
-            cpu: 1
+            memory: 512Mi
+            cpu: 400m
         volumeMounts:
         - name: v-nginx-html
           mountPath: /usr/share/nginx/html

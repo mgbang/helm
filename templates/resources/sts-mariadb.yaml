@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: sts-mariadb
-  namespace: {{ .Chart.Name }}
+  # namespace: {{ .Chart.Name }}
 spec:
   replicas: 1
   serviceName: svc-mariadb
@@ -17,18 +17,18 @@ spec:
     spec:
       nodeSelector:
         masterVersion: "{{ .Values.nodeSelector.masterVersion }}"
-      affinity:
-        podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: layer
-                  operator: In
-                  values:
-                  - backend
-              topologyKey: "kubernetes.io/hostname"
+      # affinity:
+      #   podAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #     - weight: 100
+      #       podAffinityTerm:
+      #         labelSelector:
+      #           matchExpressions:
+      #           - key: layer
+      #             operator: In
+      #             values:
+      #             - backend
+      #         topologyKey: "kubernetes.io/hostname"
       volumes:
       - name: v-database
         hostPath:
@@ -42,11 +42,11 @@ spec:
         - containerPort: 3306
         resources:
           requests:
-            memory: {{ .Values.layers.database.resources.memory }}
-            cpu: {{ .Values.layers.database.resources.cpu }}
+            memory: 512Mi
+            cpu: 500m
           limits:
-            memory: 2Gi
-            cpu: 2
+            memory: 1Gi
+            cpu: 1
         volumeMounts:
         - name: v-database
           mountPath: /var/lib/mysql

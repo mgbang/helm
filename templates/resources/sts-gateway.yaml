@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: sts-gateway
-  namespace: {{ .Chart.Name }}
+  # namespace: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.layers.backend.gateway.replicas }}
   serviceName: svc-gateway
@@ -17,18 +17,18 @@ spec:
     spec:
       nodeSelector:
         masterVersion: "{{ .Values.nodeSelector.masterVersion }}"
-      affinity:
-        podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - core
-              topologyKey: "kubernetes.io/hostname"
+      # affinity:
+      #   podAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #     - weight: 100
+      #       podAffinityTerm:
+      #         labelSelector:
+      #           matchExpressions:
+      #           - key: app
+      #             operator: In
+      #             values:
+      #             - core
+      #         topologyKey: "kubernetes.io/hostname"
       volumes:
       - name: v-data
         hostPath:
@@ -47,8 +47,8 @@ spec:
         - containerPort: 10001
         resources:
           requests:
-            memory: {{ .Values.layers.backend.gateway.resources.memory }}
-            cpu: {{ .Values.layers.backend.gateway.resources.cpu }}
+            memory: 512Mi
+            cpu: 200m
           limits:
             memory: 1Gi
             cpu: 1

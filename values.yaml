@@ -23,55 +23,37 @@ mountPaths:
 layers:
   backend:
     gateway:
-      replicas: 2
+      replicas: 1
       image:
         name: smartoffice3.kr.ncr.ntruss.com/gateway
         tag: 3.0.0
         pullPolicy: Always
-      resources:
-        memory: 500Mi
-        cpu: 200m
     core:
-      replicas: 2
+      replicas: 1
       image:
         name: smartoffice3.kr.ncr.ntruss.com/core
         tag: 3.0.0
         pullPolicy: Always
-      resources:
-        memory: 500Mi
-        cpu: 200m
     seat:
       replicas: 1
       image:
         name: smartoffice3.kr.ncr.ntruss.com/seat
         tag: 3.0.0
         pullPolicy: Always
-      resources:
-        memory: 500Mi
-        cpu: 200m
     room:
       replicas: 1
       image:
         name: smartoffice3.kr.ncr.ntruss.com/room
         tag: 3.0.0
         pullPolicy: Always
-      resources:
-        memory: 500Mi
-        cpu: 200m
   frontend:
     replicas: 1
     image:
       name: nginx
       tag: 1.27.1
       pullPolicy: IfNotPresent
-    resources:
-        memory: 500Mi
-        cpu: 200m
   database:
     image:
       name: smartoffice3.kr.ncr.ntruss.com/db
       tag: 3.0.0
       pullPolicy: IfNotPresent
-    resources:
-        memory: 500Mi
-        cpu: 200m
